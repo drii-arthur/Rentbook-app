@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { Container, Header, Left, Body, Right, Title, Button, Icon } from 'native-base';
+import { Container, Header, Left, Body, Title, Button, Icon } from 'native-base';
 import { View, Text, Image } from 'react-native'
 export default class History extends Component {
     render() {
         return (
             <Container>
-                <Header>
+                <Header transparent style={{ elevation: 3 }}>
                     <Left>
-                        <Button transparent>
-                            <Icon name='arrow-back' />
+                        <Button transparent onPress={() => this.props.navigation.goBack()}>
+                            <Image source={require('../Assets/Icons/back.png')} />
                         </Button>
                     </Left>
                     <Body style={{ justifyContent: 'center' }}>

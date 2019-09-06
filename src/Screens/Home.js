@@ -1,13 +1,13 @@
 import React from 'react'
 import { View, Text, TextInput, StyleSheet, Image, ScrollView } from 'react-native'
 import Carousel from '../Components/carousel';
-import BookList from '../Components/BookList';
-import BottomNav from '../Components/bottomNavigator';
+import AllBooks from '../Components/BookList';
+
 
 const Home = () => {
     return (
         // container
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, marginTop: 20 }}>
 
             <View style={style.header}>
                 <View style={style.iconBook}>
@@ -21,7 +21,7 @@ const Home = () => {
             {/* carousel */}
             <ScrollView>
                 <Carousel />
-                <BookList />
+                <AllBooks />
             </ScrollView>
             {/* <BottomNav /> */}
         </View>

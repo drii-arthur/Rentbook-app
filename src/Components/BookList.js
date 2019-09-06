@@ -1,14 +1,24 @@
-import React, { Component } from 'React'
+import React from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
 import StarRating from 'react-native-star-rating'
+import { getBook } from '../Redux/Actions/books'
+import { connect } from 'react-redux'
 
 
-class BookList extends Component {
+class AllBooks extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            starCount: 2.5
-        };
+            books: [],
+            starCount: 2.5,
+
+        }
+    }
+    componentDidMount = async () => {
+        await this.props.dispatch(getBook())
+        this.setState({
+            books: this.props.books.bookAllList
+        })
     }
 
     onStarRatingPress(rating) {
@@ -17,6 +27,8 @@ class BookList extends Component {
         });
     }
     render() {
+        const { books } = this.state
+        console.log(this.props.books.bookAllList, 'ikeh')
         return (
             <View style={style.container}>
                 <View>
@@ -24,93 +36,48 @@ class BookList extends Component {
                         Popular Books
                     </Text>
                 </View>
-
                 <View style={style.wrapper}>
-                    <View style={{ width: '50%', padding: 15 }}>
-                        <View style={style.bookCard}>
-                            <Image source={require('../Assets/Icons/foto2.png')} style={style.cardImage} />
-                        </View>
-                        <Text style={style.textImageCard}>Dilan 1990</Text>
-                        <StarRating style={{ width: '50%' }}
-                            disabled={true}
-                            emptyStar={require('../Assets/Icons/Star.png')}
-                            fullStar={require('../Assets/Icons/Star.png')}
-                            halfStar={require('../Assets/Icons/Star.png')}
-                            iconSet={'Ionicons'}
-                            maxStars={5}
-                            rating={this.state.starCount}
-                            // selectedStar={(rating) => this.onStarRatingPress(rating)}
-                            fullStarColor={'#F3AC13'}
-                            starSize={13}
-                        />
-                    </View>
+                    {books ? books.map((data, index) => {
+                        return (
+                            <View style={{ width: '50%', padding: 15 }} key={index}>
+                                <View style={style.bookCard}>
+                                    <Image source={{ uri: `${data.image}` }} style={style.cardImage} />
+                                </View>
+                                <Text style={style.textImageCard}>{data.title}</Text>
+                                <View style={{ width: '50%' }}>
+                                    <StarRating style={{ width: '50%' }}
+                                        disabled={true}
+                                        emptyStar={require('../Assets/Icons/Star.png')}
+                                        fullStar={require('../Assets/Icons/Star.png')}
+                                        halfStar={require('../Assets/Icons/Star.png')}
+                                        iconSet={'Ionicons'}
+                                        maxStars={5}
+                                        rating={this.state.starCount}
+                                        // selectedStar={(rating) => this.onStarRatingPress(rating)}
+                                        fullStarColor={'#F3AC13'}
+                                        starSize={13}
+                                    />
+                                </View>
+                            </View>
 
-                    <View style={{ width: '50%', padding: 15 }}>
-                        <View style={style.bookCard}>
-                            <Image source={require('../Assets/Icons/foto1.jpg')} style={style.cardImage} />
-                        </View>
-                        <Text style={style.textImageCard}>Harry Potter</Text>
-                        <StarRating
-                            disabled={true}
-                            emptyStar={require('../Assets/Icons/Star.png')}
-                            fullStar={require('../Assets/Icons/Star.png')}
-                            halfStar={require('../Assets/Icons/Star.png')}
-                            iconSet={'Ionicons'}
-                            maxStars={5}
-                            rating={this.state.starCount}
-                            // selectedStar={(rating) => this.onStarRatingPress(rating)}
-                            fullStarColor={'#F3AC13'}
-                            starSize={15}
-                            starStyle={style.star}
-                        />
-                    </View>
-
-                    <View style={{ width: '50%', padding: 15 }}>
-                        <View style={style.bookCard}>
-                            <Image source={require('../Assets/Icons/foto2.png')} style={style.cardImage} />
-                        </View>
-                        <Text style={style.textImageCard}>Dilan 1990</Text>
-                        <StarRating
-                            disabled={true}
-                            emptyStar={require('../Assets/Icons/Star.png')}
-                            fullStar={require('../Assets/Icons/Star.png')}
-                            halfStar={require('../Assets/Icons/Star.png')}
-                            iconSet={'Ionicons'}
-                            maxStars={5}
-                            rating={this.state.starCount}
-                            // selectedStar={(rating) => this.onStarRatingPress(rating)}
-                            fullStarColor={'#F3AC13'}
-                            starSize={15}
-                            starStyle={style.star}
-                        />
-                    </View>
-
-                    <View style={{ width: '50%', padding: 15 }}>
-                        <View style={style.bookCard}>
-                            <Image source={require('../Assets/Icons/foto1.jpg')} style={style.cardImage} />
-                        </View>
-                        <Text style={style.textImageCard}>Harry Potter</Text>
-                        <StarRating
-                            disabled={true}
-                            emptyStar={require('../Assets/Icons/Star.png')}
-                            fullStar={require('../Assets/Icons/Star.png')}
-                            halfStar={require('../Assets/Icons/Star.png')}
-                            iconSet={'Ionicons'}
-                            maxStars={5}
-                            rating={this.state.starCount}
-                            // selectedStar={(rating) => this.onStarRatingPress(rating)}
-                            fullStarColor={'#F3AC13'}
-                            starSize={15}
-                            starStyle={style.star}
-                        />
-                    </View>
-
+                        )
+                    }) : <Text>loading...</Text>}
                 </View>
+
             </View>
 
         )
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        books: state.books,
+
+    };
+};
+
+export default connect(mapStateToProps)(AllBooks);
 
 const style = StyleSheet.create({
     container: {
@@ -125,7 +92,7 @@ const style = StyleSheet.create({
     wrapper: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        marginTop: 5
+        marginTop: 5,
     },
     bookCard: {
         width: '100%',
@@ -143,11 +110,10 @@ const style = StyleSheet.create({
         fontSize: 11,
         fontWeight: 'bold',
         marginTop: 6,
-        marginBottom: 10
+        marginBottom: 5
     },
     star: {
         marginRight: 2
     }
 })
 
-export default BookList

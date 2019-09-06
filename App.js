@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import { Provider } from 'react-redux'
+import store from './src/Redux/store'
 import {
   createAppContainer,
   createSwitchNavigator
 } from 'react-navigation';
 import { Icon } from 'native-base';
+import { Image } from 'react-native'
 import { createMaterialTopTabNavigator, } from "react-navigation-tabs";
 import { createStackNavigator } from 'react-navigation-stack';
 import Login from './src/Screens/Login'
@@ -12,6 +15,7 @@ import Home from './src/Screens/Home'
 import BookDetail from './src/Screens/BookDetail'
 import History from './src/Screens/History'
 import Profile from './src/Screens/Profile'
+import Auth from './src/Screens/auth'
 
 const UserTabNavigator = createMaterialTopTabNavigator(
   {
@@ -19,7 +23,7 @@ const UserTabNavigator = createMaterialTopTabNavigator(
       screen: Home,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
-          <Icon name="home" color={tintColor} size={24} />
+          <Image source={require('./src/Assets/Icons/home.png')} color={tintColor} size={24} />
 
         ),
       },
@@ -28,7 +32,7 @@ const UserTabNavigator = createMaterialTopTabNavigator(
       screen: History,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
-          <Icon name="map" color={tintColor} size={24} />
+          <Image source={require('./src/Assets/Icons/clock.png')} color={tintColor} size={24} />
         ),
       },
     },
@@ -36,7 +40,7 @@ const UserTabNavigator = createMaterialTopTabNavigator(
       screen: Profile,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
-          <Icon name="person" color={tintColor} size={24} />
+          <Image source={require('./src/Assets/Icons/man.png')} color={tintColor} size={20} />
 
         ),
       },
@@ -44,24 +48,25 @@ const UserTabNavigator = createMaterialTopTabNavigator(
   },
   {
     tabBarPosition: 'bottom',
-    swipeEnabled: true,
+    swipeEnabled: false,
     animationEnabled: false,
     tabBarOptions: {
-      activeTintColor: 'black',
+      activeTintColor: '#090B28',
       inactiveTintColor: '#b3cde0',
       upperCaseLabel: false,
       labelStyle: {
         fontSize: 12,
-        marginTop: 1,
-        marginBottom: 5
+        marginTop: 0,
+        paddingBottom: 5
       },
       style: {
         backgroundColor: '#fff',
         elevation: 15,
-        height: 50,
+        height: 57,
       },
       indicatorStyle: {
-        height: 0,
+        height: 2,
+        backgroundColor: '#090B28'
       },
       showIcon: true,
     },
@@ -88,13 +93,24 @@ const AuthStack = createStackNavigator({
   { headerMode: 'none' })
 
 const Apps = createSwitchNavigator({
+  Auth,
   AuthStack,
   AppStackNavigator
 }, {
-    initialRouteName: 'AppStackNavigator',
-  })
+  initialRouteName: 'Auth',
+})
 
-export default createAppContainer(Apps);
+const AppContainer = createAppContainer(Apps);
+
+const App = () => {
+  return (
+    <Provider store={store}>
+      <AppContainer />
+    </Provider>
+  )
+}
+
+export default App
 
 
 
