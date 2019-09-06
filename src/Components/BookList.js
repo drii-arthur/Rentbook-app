@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import StarRating from 'react-native-star-rating'
 import { getBook } from '../Redux/Actions/books'
 import { connect } from 'react-redux'
@@ -26,9 +26,13 @@ class AllBooks extends React.Component {
             starCount: rating
         });
     }
+
+    // getDetail = () => {
+    //     this.props.navigation.navigate("BookDetail")
+
+    // }
     render() {
         const { books } = this.state
-        console.log(this.props.books.bookAllList, 'ikeh')
         return (
             <View style={style.container}>
                 <View>
@@ -38,8 +42,12 @@ class AllBooks extends React.Component {
                 </View>
                 <View style={style.wrapper}>
                     {books ? books.map((data, index) => {
+                        console.log(data.id_books)
                         return (
-                            <View style={{ width: '50%', padding: 15 }} key={index}>
+                            <TouchableOpacity style={{ width: '50%', padding: 15 }} onPress={() => {
+                                console.log(this); this.props.navigation.navigate("BookDetail", { idBook: data })
+                            }} key={index}>
+
                                 <View style={style.bookCard}>
                                     <Image source={{ uri: `${data.image}` }} style={style.cardImage} />
                                 </View>
@@ -58,7 +66,8 @@ class AllBooks extends React.Component {
                                         starSize={13}
                                     />
                                 </View>
-                            </View>
+
+                            </TouchableOpacity>
 
                         )
                     }) : <Text>loading...</Text>}

@@ -4,7 +4,8 @@ import Carousel from '../Components/carousel';
 import AllBooks from '../Components/BookList';
 
 
-const Home = () => {
+const Home = (props) => {
+    console.log(props)
     return (
         // container
         <View style={{ flex: 1, marginTop: 20 }}>
@@ -21,7 +22,7 @@ const Home = () => {
             {/* carousel */}
             <ScrollView>
                 <Carousel />
-                <AllBooks />
+                <AllBooks {...props} />
             </ScrollView>
             {/* <BottomNav /> */}
         </View>

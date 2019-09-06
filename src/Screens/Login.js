@@ -24,11 +24,22 @@ class Login extends Component {
             password: this.state.password
         }
         await this.props.dispatch(login(data))
-        .then(this.props.navigation.navigate('Home'))
+            .then((res, err) => {
+                const token = res.action.payload.data.token;
+                AsyncStorage.setItem('token', token, (error) => {
+                    console.log(error)
+                    if (!error) {
+                        this.props.navigation.navigate('Auth')
+                    } else {
+                        console.log(res.action.payload.data)
+                    }
+
+                });
+            })
+
 
     }
     render() {
-        console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
         return (
             <Container style={{ paddingHorizontal: 15, paddingVertical: '10%' }}>
                 <Content >

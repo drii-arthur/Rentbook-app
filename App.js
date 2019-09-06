@@ -76,10 +76,7 @@ const UserTabNavigator = createMaterialTopTabNavigator(
 const AppStackNavigator = createStackNavigator(
   {
     Homeuser: UserTabNavigator,
-    History,
-    BookDetail
-
-
+    BookDetail,
   },
   {
     headerMode: 'none',
@@ -97,7 +94,7 @@ const Apps = createSwitchNavigator({
   AuthStack,
   AppStackNavigator
 }, {
-  initialRouteName: 'Auth',
+  initialRouteName: 'AppStackNavigator',
 })
 
 const AppContainer = createAppContainer(Apps);

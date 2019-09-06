@@ -89,7 +89,7 @@ const users = (state = initialState, action) => {
                 ...state,
                 isRejected: false,
                 isFulFilled: true,
-                token: action.payload.data.token
+
             }
         default:
             return state
